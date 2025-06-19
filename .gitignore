@@ -1,5 +1,3 @@
 .azure
 node_modules
 package/*
-*.tar.gz
-*.tgz
