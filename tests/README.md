@@ -95,6 +95,44 @@ npx playwright test
 ./run-e2e-tests.sh --timeout 30000
 ```
 
+### Code Coverage
+The test suite includes comprehensive code coverage collection to analyze which parts of the frontend application are exercised during testing.
+
+```bash
+# Run tests with code coverage
+./run-e2e-tests.sh --coverage
+
+# Coverage for specific test suite
+./run-e2e-tests.sh --coverage --suite item-management.spec.ts
+
+# Environment variable approach
+COVERAGE=true npx playwright test
+
+# Generate coverage report from existing data
+./generate-coverage-report.sh
+```
+
+**Coverage Features:**
+- ✅ **JavaScript/TypeScript Coverage**: Tracks execution of frontend code
+- ✅ **File-level Analysis**: Shows which files were loaded and executed
+- ✅ **Code Path Tracking**: Identifies executed code ranges
+- ✅ **HTML Reports**: Visual coverage reports with detailed breakdowns
+- ✅ **Merge Capability**: Combines coverage data from multiple test runs
+
+**Coverage Reports:**
+- **HTML Report**: `coverage/index.html` - Interactive coverage dashboard
+- **Raw Data**: `coverage/merged-coverage.json` - Programmatic access to coverage data
+- **Individual Files**: `coverage/*_coverage.json` - Per-test coverage data
+
+**Understanding Coverage:**
+This coverage represents frontend code execution during E2E tests. It shows:
+- Which React components and utilities were rendered/executed
+- Code paths exercised by user interactions
+- Files that may need additional test scenarios
+- Overall test completeness from a code execution perspective
+
+```
+
 ### Individual Test Commands
 ```bash
 # Specific test file

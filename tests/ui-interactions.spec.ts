@@ -1,10 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
+import { coverageCollector } from "./coverage-setup";
 
 test.describe("UI Interactions and Navigation", () => {
   test.beforeEach(async ({ page }) => {
+    await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
     await expect(page.locator("text=My List").first()).toBeVisible();
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    await coverageCollector.stopCoverage(page, `ui-interactions-${testInfo.title}`);
   });
 
   test("Verify application loads and displays correctly", async ({ page }) => {
@@ -159,7 +165,7 @@ test.describe("UI Interactions and Navigation", () => {
       await expect(page.locator("text=Regular Task")).not.toBeVisible();
       
       // Clear filter
-      await searchInput.clear();
+      await searchInput.fill("");
       
       // Verify all items are visible again
       for (const item of items) {

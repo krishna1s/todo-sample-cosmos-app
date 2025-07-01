@@ -1,10 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
+import { coverageCollector } from "./coverage-setup";
 
 test.describe("List Management", () => {
   test.beforeEach(async ({ page }) => {
+    await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
     await expect(page.locator("text=My List").first()).toBeVisible();
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    await coverageCollector.stopCoverage(page, `list-management-${testInfo.title}`);
   });
 
   test("Create a new todo list", async ({ page }) => {

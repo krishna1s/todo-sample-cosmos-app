@@ -35,6 +35,12 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+
+    /* Collect code coverage data */
+    contextOptions: {
+      // Enable collecting coverage data from JS code
+      recordVideo: process.env.COVERAGE ? undefined : false,
+    },
   },
 
   /* Configure projects for major browsers */

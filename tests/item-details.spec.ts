@@ -1,11 +1,17 @@
 import { test, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
+import { coverageCollector } from "./coverage-setup";
 
 test.describe("Item Detail Management", () => {
   test.beforeEach(async ({ page }) => {
+    await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
     await expect(page.locator("text=My List").first()).toBeVisible();
     await page.locator("text=My List").first().click();
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    await coverageCollector.stopCoverage(page, `item-details-${testInfo.title}`);
   });
 
   test("Edit item details with description and due date", async ({ page }) => {
@@ -35,7 +41,7 @@ test.describe("Item Detail Management", () => {
       editInitiated = true;
       
       // Edit the name
-      await nameField.clear();
+      await nameField.fill("");
       await nameField.fill(`${itemName} - Updated`);
       
       // Add description if field is available
@@ -71,7 +77,7 @@ test.describe("Item Detail Management", () => {
         // Now try the form fields again
         const nameFieldAlt = page.locator('input[value*="Detail Test"], textarea[value*="Detail Test"]').first();
         if (await nameFieldAlt.isVisible()) {
-          await nameFieldAlt.clear();
+          await nameFieldAlt.fill("");
           await nameFieldAlt.fill(`${itemName} - Updated`);
           
           const saveButtonAlt = page.locator('button:has-text("Save")').first();
@@ -130,7 +136,7 @@ test.describe("Item Detail Management", () => {
     const nameField = page.locator('input[value*="Cancel Test"], textarea[value*="Cancel Test"]').first();
     if (await nameField.isVisible()) {
       // Make changes
-      await nameField.clear();
+      await nameField.fill("");
       await nameField.fill("Changed Name - Should Not Save");
       
       // Cancel instead of saving
@@ -246,7 +252,7 @@ test.describe("Item Detail Management", () => {
       if (await stateDropdown.isVisible()) {
         await stateDropdown.click();
         
-        const stateOption = page.locator(`option[value="${state}"], [role="option"]:has-text("${state}")`.first());
+        const stateOption = page.locator(`option[value="${state}"], [role="option"]:has-text("${state}")`).first();
         if (await stateOption.isVisible()) {
           await stateOption.click();
           
@@ -281,7 +287,7 @@ test.describe("Item Detail Management", () => {
     const nameField = page.locator('input[value*="Validation Test"], textarea[value*="Validation Test"]').first();
     if (await nameField.isVisible()) {
       // Try to save with empty name
-      await nameField.clear();
+      await nameField.fill("");
       
       const saveButton = page.locator('button:has-text("Save")').first();
       if (await saveButton.isVisible()) {
@@ -318,12 +324,13 @@ test.describe("Item Detail Management", () => {
     }
     
     // Edit each item
-    for (const [index, item] of items.entries()) {
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index];
       await page.locator(`text=${item}`).first().dblclick();
       
       const nameField = page.locator(`input[value*="Multi Edit Item ${index + 1}"], textarea[value*="Multi Edit Item ${index + 1}"]`).first();
       if (await nameField.isVisible()) {
-        await nameField.clear();
+        await nameField.fill("");
         await nameField.fill(`${item} - Edited`);
         
         const saveButton = page.locator('button:has-text("Save")').first();

@@ -1,31 +1,39 @@
 import { test, expect } from "@playwright/test";
 import { v4 as uuidv4 } from "uuid";
+import { coverageCollector } from "./coverage-setup";
 
-test("Create and delete item test", async ({ page }) => {
-  await page.goto("/", { waitUntil: 'networkidle' });
+test.describe("Basic Todo Operations", () => {
+  test.afterEach(async ({ page }, testInfo) => {
+    await coverageCollector.stopCoverage(page, `basic-todo-${testInfo.title}`);
+  });
 
-  await expect(page.locator("text=My List").first()).toBeVisible();
+  test("Create and delete item test", async ({ page }) => {
+    await coverageCollector.startCoverage(page);
+    await page.goto("/", { waitUntil: 'networkidle' });
 
-  await expect(page.locator("text=This list is empty.").first()).toBeVisible()
+    await expect(page.locator("text=My List").first()).toBeVisible();
 
-  const guid = uuidv4();
-  console.log(`Creating item with text: ${guid}`);
+    await expect(page.locator("text=This list is empty.").first()).toBeVisible()
 
-  await page.locator('[placeholder="Add an item"]').focus();
-  await page.locator('[placeholder="Add an item"]').type(guid);
-  await page.locator('[placeholder="Add an item"]').press("Enter");
+    const guid = uuidv4();
+    console.log(`Creating item with text: ${guid}`);
 
-  console.log(`Deleting item with text: ${guid}`);
-  await expect(page.locator(`text=${guid}`).first()).toBeVisible()
+    await page.locator('[placeholder="Add an item"]').focus();
+    await page.locator('[placeholder="Add an item"]').type(guid);
+    await page.locator('[placeholder="Add an item"]').press("Enter");
 
-  await page.locator(`text=${guid}`).click();
+    console.log(`Deleting item with text: ${guid}`);
+    await expect(page.locator(`text=${guid}`).first()).toBeVisible()
 
-  /* when delete option is hide behind "..." button */
-  const itemMoreDeleteButton = await page.$('button[role="menuitem"]:has-text("")');
-  if(itemMoreDeleteButton){
-    await itemMoreDeleteButton.click();
-  };
-  await page.locator('button[role="menuitem"]:has-text("Delete")').click();
+    await page.locator(`text=${guid}`).click();
 
-  await expect(page.locator(`text=${guid}`).first()).toBeHidden()
+    /* when delete option is hide behind "..." button */
+    const itemMoreDeleteButton = await page.$('button[role="menuitem"]:has-text("")');
+    if(itemMoreDeleteButton){
+      await itemMoreDeleteButton.click();
+    };
+    await page.locator('button[role="menuitem"]:has-text("Delete")').click();
+
+    await expect(page.locator(`text=${guid}`).first()).toBeHidden()
+  });
 });

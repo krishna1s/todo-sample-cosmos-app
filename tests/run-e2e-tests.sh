@@ -63,6 +63,7 @@ TEST_SUITE=""
 HEADED=""
 DEBUG=""
 TIMEOUT=""
+COVERAGE=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -82,6 +83,10 @@ while [[ $# -gt 0 ]]; do
             TIMEOUT="--timeout=$2"
             shift 2
             ;;
+        --coverage)
+            COVERAGE="true"
+            shift
+            ;;
         --help)
             echo "Usage: $0 [options]"
             echo ""
@@ -90,6 +95,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --headed         Run tests in headed mode (visible browser)"
             echo "  --debug          Run tests in debug mode"
             echo "  --timeout MS     Set custom timeout in milliseconds"
+            echo "  --coverage       Enable code coverage collection"
             echo "  --help           Show this help message"
             echo ""
             echo "Available test suites:"
@@ -105,6 +111,8 @@ while [[ $# -gt 0 ]]; do
             echo "  $0 --suite list-management.spec.ts   # Run list management tests"
             echo "  $0 --headed                          # Run all tests with visible browser"
             echo "  $0 --debug --suite todo.spec.ts      # Debug the basic test"
+            echo "  $0 --coverage                        # Run tests with code coverage"
+            echo "  $0 --coverage --suite item-management.spec.ts  # Coverage for specific suite"
             exit 0
             ;;
         *)
@@ -114,6 +122,12 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Set coverage environment variable
+if [ -n "$COVERAGE" ]; then
+    export COVERAGE=true
+    echo "🧪 Code coverage collection enabled"
+fi
 
 # Build test command
 TEST_CMD="npx playwright test"
@@ -145,6 +159,13 @@ TEST_EXIT_CODE=$?
 echo ""
 if [ $TEST_EXIT_CODE -eq 0 ]; then
     echo "✅ All tests passed successfully!"
+    
+    # Generate coverage report if coverage was enabled
+    if [ "$COVERAGE" = "true" ]; then
+        echo ""
+        echo "📊 Generating coverage report..."
+        ./generate-coverage-report.sh
+    fi
 else
     echo "❌ Some tests failed (exit code: $TEST_EXIT_CODE)"
     echo ""
@@ -159,6 +180,9 @@ echo ""
 echo "📊 Test Reports:"
 echo "   HTML Report: playwright-report/index.html"
 echo "   Test Results: test-results/"
+if [ "$COVERAGE" = "true" ]; then
+    echo "   Coverage Report: coverage/index.html"
+fi
 echo ""
 echo "🔍 For more details, see TEST_DOCUMENTATION.md"
 
