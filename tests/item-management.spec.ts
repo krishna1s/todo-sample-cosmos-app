@@ -6,10 +6,10 @@ test.describe("Item Management", () => {
   test.beforeEach(async ({ page }) => {
     await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
     
-    // Navigate to My List for testing
-    await page.locator("text=My List").first().click();
+    // Navigate to an existing list for testing
+    await page.locator("text=/My Awesome List/").first().click();
     await expect(page.locator('[placeholder="Add an item"]')).toBeVisible();
   });
 
@@ -233,7 +233,7 @@ test.describe("Item Management", () => {
     await page.reload({ waitUntil: 'networkidle' });
     
     // Verify item still exists
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     await expect(page.locator(`text=${itemName}`).first()).toBeVisible();
   });
 });

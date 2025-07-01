@@ -6,7 +6,7 @@ test.describe("UI Interactions and Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
   });
 
   test.afterEach(async ({ page }, testInfo) => {
@@ -15,7 +15,7 @@ test.describe("UI Interactions and Navigation", () => {
 
   test("Verify application loads and displays correctly", async ({ page }) => {
     // Check main UI elements are present
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
     
     // Check for sidebar navigation
     const sidebar = page.locator('[role="navigation"], nav').first();
@@ -24,7 +24,7 @@ test.describe("UI Interactions and Navigation", () => {
     }
     
     // Check for main content area
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     await expect(page.locator('[placeholder="Add an item"]')).toBeVisible();
   });
 
@@ -40,8 +40,8 @@ test.describe("UI Interactions and Navigation", () => {
     await page.locator(`text=${listName}`).first().click();
     await page.waitForURL(`**/lists/**`);
     
-    // Navigate to My List
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list
+    await page.locator("text=/My Awesome List/").first().click();
     await page.waitForURL(`**/lists/**`);
     
     // Test browser back button
@@ -50,14 +50,14 @@ test.describe("UI Interactions and Navigation", () => {
     
     // Test browser forward button
     await page.goForward();
-    // Should be back to My List
+    // Should be back to existing list
   });
 
   test("Command bar functionality", async ({ page }) => {
     const itemName = `Command Test ${uuidv4()}`;
     
-    // Navigate to My List
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Create an item
     await page.locator('[placeholder="Add an item"]').fill(itemName);
@@ -86,8 +86,8 @@ test.describe("UI Interactions and Navigation", () => {
   test("Context menu interactions", async ({ page }) => {
     const itemName = `Context Menu Test ${uuidv4()}`;
     
-    // Navigate to My List and create an item
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list and create an item
+    await page.locator("text=/My Awesome List/").first().click();
     await page.locator('[placeholder="Add an item"]').fill(itemName);
     await page.locator('[placeholder="Add an item"]').press("Enter");
     await expect(page.locator(`text=${itemName}`).first()).toBeVisible();
@@ -119,8 +119,8 @@ test.describe("UI Interactions and Navigation", () => {
   });
 
   test("Form validation", async ({ page }) => {
-    // Navigate to My List
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Try to submit empty item
     await page.locator('[placeholder="Add an item"]').focus();
@@ -144,8 +144,8 @@ test.describe("UI Interactions and Navigation", () => {
       `Another Important Task ${uuidv4()}`
     ];
     
-    // Navigate to My List and create items
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list and create items
+    await page.locator("text=/My Awesome List/").first().click();
     
     for (const item of items) {
       await page.locator('[placeholder="Add an item"]').fill(item);
@@ -177,23 +177,23 @@ test.describe("UI Interactions and Navigation", () => {
   test("Responsive design elements", async ({ page }) => {
     // Test with different viewport sizes
     await page.setViewportSize({ width: 1200, height: 800 });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
     
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
     
     // Test tablet viewport
     await page.setViewportSize({ width: 768, height: 1024 });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
     
     // Reset to desktop
     await page.setViewportSize({ width: 1200, height: 800 });
   });
 
   test("Keyboard navigation", async ({ page }) => {
-    // Navigate to My List
-    await page.locator("text=My List").first().click();
+    // Navigate to existing list
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Test Tab navigation
     await page.keyboard.press("Tab");
@@ -209,7 +209,7 @@ test.describe("UI Interactions and Navigation", () => {
 
   test("Loading states and error handling", async ({ page }) => {
     // Test navigation while content is loading
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Add an item and immediately try to add another
     const item1 = `Quick Item 1 ${uuidv4()}`;
@@ -241,8 +241,8 @@ test.describe("UI Interactions and Navigation", () => {
     await page.locator('[placeholder="Add an item"]').press("Enter");
     await expect(page.locator(`text=${itemName}`).first()).toBeVisible();
     
-    // Switch to My List
-    await page.locator("text=My List").first().click();
+    // Switch to existing list
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Verify the UI elements are consistent
     await expect(page.locator('[placeholder="Add an item"]')).toBeVisible();

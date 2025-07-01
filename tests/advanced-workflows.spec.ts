@@ -6,7 +6,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   test.beforeEach(async ({ page }) => {
     await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
   });
 
   test.afterEach(async ({ page }, testInfo) => {
@@ -64,7 +64,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   });
 
   test("Data validation and edge cases", async ({ page }) => {
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Test very long item names
     const longItemName = `Very long item name that should test the UI limits and see how it handles extremely long text input that might cause layout issues ${uuidv4()}`;
@@ -86,7 +86,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   });
 
   test("Performance with large number of items", async ({ page }) => {
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Create many items to test performance
     const itemCount = 20;
@@ -111,7 +111,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   });
 
   test("Concurrent operations", async ({ page }) => {
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Create multiple items quickly
     const items = [
@@ -146,7 +146,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
     await expect(page.locator(`text=${testItem}`).first()).toBeVisible();
     
     // Navigate away and back
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     await page.locator(`text=${testList}`).first().click();
     
     // Verify item is still there
@@ -159,7 +159,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   });
 
   test("Error handling and recovery", async ({ page }) => {
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Test rapid operations that might cause conflicts
     const rapidItem = `Rapid Test ${uuidv4()}`;
@@ -187,7 +187,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
 
   test("Cross-browser compatibility checks", async ({ page }) => {
     // Test basic functionality that should work across browsers
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     const compatItem = `Compatibility Test ${uuidv4()}`;
     await page.locator('[placeholder="Add an item"]').fill(compatItem);
@@ -205,7 +205,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
   });
 
   test("Accessibility features", async ({ page }) => {
-    await page.locator("text=My List").first().click();
+    await page.locator("text=/My Awesome List/").first().click();
     
     // Test keyboard-only navigation
     await page.keyboard.press("Tab");
@@ -258,7 +258,7 @@ test.describe("Advanced Workflows and Edge Cases", () => {
     
     // Should still be able to navigate normally
     await page.goto('/');
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
   });
 
   test("Data cleanup and list management", async ({ page }) => {
@@ -291,8 +291,8 @@ test.describe("Advanced Workflows and Edge Cases", () => {
     }
     
     // Verify we can still use the application normally
-    await expect(page.locator("text=My List").first()).toBeVisible();
-    await page.locator("text=My List").first().click();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
+    await page.locator("text=/My Awesome List/").first().click();
     await expect(page.locator('[placeholder="Add an item"]')).toBeVisible();
   });
 });

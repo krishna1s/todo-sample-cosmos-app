@@ -6,8 +6,8 @@ test.describe("Item Detail Management", () => {
   test.beforeEach(async ({ page }) => {
     await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
-    await expect(page.locator("text=My List").first()).toBeVisible();
-    await page.locator("text=My List").first().click();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
+    await page.locator("text=/My Awesome List/").first().click();
   });
 
   test.afterEach(async ({ page }, testInfo) => {

@@ -11,7 +11,7 @@ test.describe("Basic Todo Operations", () => {
     await coverageCollector.startCoverage(page);
     await page.goto("/", { waitUntil: 'networkidle' });
 
-    await expect(page.locator("text=My List").first()).toBeVisible();
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible();
 
     await expect(page.locator("text=This list is empty.").first()).toBeVisible()
 

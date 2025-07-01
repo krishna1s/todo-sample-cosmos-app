@@ -36,7 +36,7 @@ test.describe("Azure Endpoint Quick Tests", () => {
     await page.goto("/", { waitUntil: 'networkidle', timeout: 30000 });
     
     // Check if default list is visible
-    await expect(page.locator("text=My List").first()).toBeVisible({ timeout: 30000 });
+    await expect(page.locator("text=/My Awesome List/").first()).toBeVisible({ timeout: 30000 });
     
     // Try to create a new list
     const listName = `Test List ${uuidv4()}`;
