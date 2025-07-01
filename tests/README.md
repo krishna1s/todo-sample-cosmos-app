@@ -55,6 +55,18 @@ cd tests
 ./run-e2e-tests.sh
 ```
 
+**Option 3: Azure Deployment Testing**
+```bash
+# Test against existing Azure deployment
+cd tests
+export REACT_APP_WEB_BASE_URL="https://app-web-ocwiawb26beca.azurewebsites.net"
+./run-tests-azure-endpoint.sh
+
+# Or run with coverage collection
+./run-e2e-tests.sh --coverage
+./generate-coverage-report.sh
+```
+
 ### Test Environment Discovery
 
 The tests will discover the application endpoint in this order:
