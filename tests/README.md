@@ -67,6 +67,25 @@ export REACT_APP_WEB_BASE_URL="https://app-web-ocwiawb26beca.azurewebsites.net"
 ./generate-coverage-report.sh
 ```
 
+**Option 4: Live Azure Endpoint Testing (New!)**
+```bash
+# Run comprehensive tests against live Azure endpoint with coverage
+cd tests
+export REACT_APP_WEB_BASE_URL="https://app-web-ocwiawb26beca.azurewebsites.net"
+
+# Quick verification tests
+npx playwright test azure-quick-test.spec.ts
+
+# Full coverage collection tests  
+npx playwright test azure-coverage-test.spec.ts
+
+# Generate detailed coverage report
+./generate-azure-coverage-report.sh
+
+# Run complete test suite
+./run-azure-comprehensive-tests.sh
+```
+
 ### Test Environment Discovery
 
 The tests will discover the application endpoint in this order:
