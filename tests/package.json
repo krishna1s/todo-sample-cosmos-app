@@ -1,8 +1,18 @@
 {
+    "scripts": {
+        "test": "playwright test",
+        "test:coverage": "playwright test --reporter=html,line",
+        "coverage:report": "nyc report --reporter=html --reporter=lcov --reporter=text"
+    },
     "devDependencies": {
         "@playwright/test": "^1.22.2",
         "@types/uuid": "^8.3.4",
         "dotenv": "^16.0.1",
+        "istanbul-lib-coverage": "^3.2.2",
+        "istanbul-lib-report": "^3.0.1",
+        "istanbul-reports": "^3.1.6",
+        "nyc": "^15.1.0",
+        "typescript": "^5.8.3",
         "uuid": "^8.3.2"
     }
 }
